@@ -1,13 +1,20 @@
-{% extends "_layouts/cp" %}
-{% set title = "MaxCDN"|t %}
+{% extends '_layouts/cp' %}
+
+{% set title = 'MaxCDN' %}
+{% set message = craft.session.getFlash('cacheCleared') %}
 
 {% set extraPageHeaderHtml %}
 	<div class="buttons">
-		<a href="{{ url('maxcdn/cache') }}" class="btn" data-icon="settings" role="button">Manage Cache</a>
+		<a
+			href="{{ url('maxcdn/cache') }}"
+			class="btn"
+			data-icon="settings"
+			role="button"
+		>
+			Manage Cache
+		</a>
 	</div>
 {% endset %}
-
-{% set message = craft.session.getFlash('cacheCleared') %}
 
 {% set sidebar %}
 	<nav>
@@ -17,7 +24,6 @@
 		</ul>
 	</nav>
 {% endset %}
-
 
 {% set content %}
 	<table class="data fullwidth">
@@ -31,12 +37,12 @@
 		</thead>
 		<tbody>
 			{% for file in files %}
-			<tr>
-				<td>{{ file.uri }}</td>
-				<td>{{ file.timestamp|date('M d, Y') }}</td>
-				<td>{{ file.hit }}</td>
-				<td>{{ file.size }}</td>
-			</tr>
+				<tr>
+					<td>{{ file.uri }}</td>
+					<td>{{ file.timestamp|date('M d, Y') }}</td>
+					<td>{{ file.hit }}</td>
+					<td>{{ file.size }}</td>
+				</tr>
 			{% endfor %}
 		</tbody>
 	</table>
