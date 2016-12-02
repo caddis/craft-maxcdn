@@ -1,0 +1,19 @@
+{% extends '_layouts/cp' %}
+
+{% set title = 'MaxCDN' %}
+{% set message = craft.session.getFlash('cacheCleared') %}
+
+{% set tabs = {
+	files: {
+		label: 'Files',
+		url: url('maxcdn')
+	},
+	zones: {
+		label: 'Zones',
+		url: url('maxcdn/zones')
+	},
+	purge: {
+		label: 'Purge'|t,
+		url: url('maxcdn/cache')
+	}
+} %}

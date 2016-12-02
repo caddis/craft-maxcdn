@@ -1,29 +1,18 @@
-{% extends '_layouts/cp' %}
+{% extends 'maxcdn/layouts/cp' %}
 
 {% import '_includes/forms' as forms %}
 
-{% set title = 'MaxCDN' %}
+{% set selectedTab = 'purge' %}
 {% set fullPageForm = true %}
 {% set saveShortcutRedirect = 'home' %}
 
-{% set extraPageHeaderHtml %}
-	<div class="buttons right">
-		<a
-			href="{{ siteUrl }}{{ craft.config.cpTrigger }}/maxcdn/cache"
-			class="btn submit"
-			data-icon="settings"
-			role="button"
-		>
-			{{ 'Manage Cache'|t }}
-		</a>
-	</div>
-{% endset %}
+{% set extraPageHeaderHtml = '' %}
 
 {% set content %}
 	{{ forms.selectField({
 		label: 'Zone'|t,
 		name: 'zone_id',
-		instructions: 'Select the zone that you\'d like to clear.',
+		instructions: 'Select which zone to purge.',
 		options: options
 	}) }}
 

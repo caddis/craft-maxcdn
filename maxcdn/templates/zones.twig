@@ -1,33 +1,6 @@
-{% extends '_layouts/cp' %}
+{% extends 'maxcdn/layouts/cp' %}
 
-{% set title = 'MaxCDN' %}
-{% set message = craft.session.getFlash('cacheCleared') %}
-
-{% set extraPageHeaderHtml %}
-	<div class="buttons">
-		<a
-			href="{{ url('maxcdn/cache') }}"
-			class="btn"
-			data-icon="settings"
-			role="button"
-		>
-			{{ 'Manage Cache'|t }}
-		</a>
-	</div>
-{% endset %}
-
-{% set sidebar %}
-	<nav>
-		<ul>
-			<li>
-				<a href="{{ url('maxcdn') }}">{{ 'Files'|t }}</a>
-			</li>
-			<li>
-				<a href="{{ url('maxcdn/zones') }}" class="sel">{{ 'Zones'|t }}</a>
-			</li>
-		</ul>
-	</nav>
-{% endset %}
+{% set selectedTab = 'zones' %}
 
 {% set content %}
 	<table class="data fullwidth">

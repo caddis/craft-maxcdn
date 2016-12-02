@@ -75,14 +75,14 @@ class MaxCDNController extends BaseController
 	 */
 	public function actionPurgeCache()
 	{
-		 $this->requirePostRequest();
+		$this->requirePostRequest();
 
-		 $zoneId = craft()->request->getPost('zone_id');
+		$zoneId = craft()->request->getPost('zone_id');
 
-		 craft()->maxCDN->purgeFiles($zoneId);
+		craft()->maxCDN->purgeFiles($zoneId);
 
-		 craft()->userSession->setNotice(Craft::t('Cache cleared.'));
+		craft()->userSession->setNotice(Craft::t('Cache cleared.'));
 
-		 return $this->actionIndex();
+		return $this->actionIndex();
 	}
 }
