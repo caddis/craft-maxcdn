@@ -1,19 +1,25 @@
 {% import '_includes/forms' as forms %}
 
 {{ forms.textField({
+	errors: settings.getErrors('alias'),
 	label: 'Alias'|t,
 	name: 'alias',
+	required: true,
 	value: settings.alias
 }) }}
 
 {{ forms.textField({
+	errors: settings.getErrors('consumerKey'),
 	label: 'Consumer Key'|t,
 	name: 'consumerKey',
+	required: true,
 	value: settings.consumerKey
 }) }}
 
 {{ forms.textField({
+	errors: settings.getErrors('consumerSecret'),
 	label: 'Consumer Secret'|t,
 	name: 'consumerSecret',
+	required: true,
 	value: settings.consumerSecret
 }) }}

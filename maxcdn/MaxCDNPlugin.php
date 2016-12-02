@@ -53,15 +53,18 @@ class MaxCDNPlugin extends BasePlugin
 		return [
 			'alias' => array(
 				AttributeType::String,
-				'default' => ''
+				'default' => '',
+				'required' => true
 			),
 			'consumerKey' => array(
 				AttributeType::String,
-				'default' => ''
+				'default' => '',
+				'required' => true
 			),
 			'consumerSecret' => array(
 				AttributeType::String,
-				'default' => ''
+				'default' => '',
+				'required' => true
 			)
 		];
 	}
