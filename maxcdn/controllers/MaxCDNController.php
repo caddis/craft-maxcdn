@@ -3,19 +3,10 @@ namespace Craft;
 
 class MaxCDNController extends BaseController
 {
-	protected $settings;
-
-	public function __construct()
-	{
-		$this->settings = craft()->plugins->getPlugin('maxcdn')->getSettings();
-	}
-
 	/**
-	 * Generates the index page HTML and passes the relevant variables.
+	 * Generate index page
 	 *
-	 * @method actionIndex
-	 *
-	 * @return string
+	 * @return mixed
 	 */
 	public function actionIndex()
 	{
@@ -24,30 +15,40 @@ class MaxCDNController extends BaseController
 		]);
 	}
 
+	/**
+	 * Generate zone page
+	 *
+	 * @return mixed
+	 */
 	public function actionZones()
 	{
-		$zones = craft()->maxCDN->getZones();
+		$zoneData = craft()->maxCDN->getZones();
+		$zones = array();
 
-		$viewData = [];
+		if (is_array($zoneData)) {
+			foreach ($zoneData as $zone) {
+				$stats = craft()->maxCDN->getZoneStats($zone->id);
 
-		foreach ($zones as $zone) {
-			$stats = craft()->maxCDN->getZoneStats($zone->id);
-
-			$viewData[$zone->id] = [
-				'name' => $zone->name,
-				'hits' => $stats->hit,
-				'cacheHits' => $stats->cache_hit,
-				'nonCacheHits' => $stats->noncache_hit,
-				'size' => $stats->size,
-
-			];
+				$zones[$zone->id] = array(
+					'name' => $zone->name,
+					'hits' => $stats->hit,
+					'cacheHits' => $stats->cache_hit,
+					'nonCacheHits' => $stats->noncache_hit,
+					'size' => $stats->size,
+				);
+			}
 		}
 
 		return $this->renderTemplate('maxcdn/zones', [
-				'zones' => $viewData,
+			'zones' => $zones,
 		]);
 	}
 
+	/**
+	 * Generate cache page
+	 *
+	 * @return mixed
+	 */
 	public function actionCache()
 	{
 		$zones = craft()->maxCDN->getZones();
@@ -64,6 +65,11 @@ class MaxCDNController extends BaseController
 		]);
 	}
 
+	/**
+	 * Purge cache
+	 *
+	 * @return mixed
+	 */
 	public function actionPurgeCache()
 	{
 		 $this->requirePostRequest();

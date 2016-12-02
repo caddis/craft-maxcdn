@@ -19,45 +19,6 @@ class MaxCDNService extends BaseApplicationComponent
 	}
 
 	/**
-	 * Get a list of zones. This DOES NOT include stats, just the ID,
-	 * name, and other relevant metadata about the zone.
-	 *
-	 * @method getZones
-	 *
-	 * @return array
-	 */
-	public function getZones()
-	{
-		return $this->callApi('/zones.json', 'zones');
-	}
-
-	/**
-	 * Get the stats for a provided Zone. Note that an ID will generally
-	 * be something like '12345'. Don't confuse the indexes on the
-	 * zones array with the zone's actual ID.
-	 *
-	 * @param int $id
-	 * @return object
-	 */
-	public function getZoneStats($id)
-	{
-		$response = $this->callApi('/reports/' . $id . '/stats.json', 'stats');
-
-		// TODO: Will likely break here with multiple zones.
-		// Patch when you have multiple zones to test.
-
-		$response->hit = number_format($response->hit);
-
-		$response->cache_hit = number_format($response->cache_hit);
-
-		$response->noncache_hit = number_format($response->noncache_hit);
-
-		$response->size = $this->convertSize($response->size, 'GB');
-
-		return $response;
-	}
-
-	/**
 	 * Get the files in a zone, sorted by hits
 	 *
 	 * @return array|bool
@@ -70,7 +31,7 @@ class MaxCDNService extends BaseApplicationComponent
 			return false;
 		}
 
-		foreach($files as &$file) {
+		foreach ($files as &$file) {
 			$file->hit = number_format($file->hit);
 			$file->size = $this->convertSize($file->size, 'GB');
 		}
@@ -79,7 +40,38 @@ class MaxCDNService extends BaseApplicationComponent
 	}
 
 	/**
-	 * Delete the zone by its provided ID.
+	 * Get zones
+	 *
+	 * @return array|bool
+	 */
+	public function getZones()
+	{
+		return $this->callApi('/zones.json', 'zones');
+	}
+
+	/**
+	 * Get zone stats
+	 *
+	 * @param int $id
+	 * @return array|bool
+	 */
+	public function getZoneStats($id)
+	{
+		$response = $this->callApi('/reports/' . $id . '/stats.json', 'stats');
+
+		// TODO: Will likely break here with multiple zones.
+		// Patch when you have multiple zones to test.
+
+		$response->hit = number_format($response->hit);
+		$response->cache_hit = number_format($response->cache_hit);
+		$response->noncache_hit = number_format($response->noncache_hit);
+		$response->size = $this->convertSize($response->size, 'GB');
+
+		return $response;
+	}
+
+	/**
+	 * Purge zone by id
 	 *
 	 * @param  int $zoneId
 	 * @return void
