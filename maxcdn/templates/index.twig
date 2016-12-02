@@ -11,7 +11,7 @@
 			data-icon="settings"
 			role="button"
 		>
-			Manage Cache
+			{{ 'Manage Cache'|t }}
 		</a>
 	</div>
 {% endset %}
@@ -19,8 +19,12 @@
 {% set sidebar %}
 	<nav>
 		<ul>
-			<li><a href="{{ url('maxcdn') }}" class="sel">Files</a></li>
-			<li><a href="{{ url('maxcdn/zones') }}">Zones</a></li>
+			<li>
+				<a href="{{ url('maxcdn') }}" class="sel">{{ 'Files'|t }}</a>
+			</li>
+			<li>
+				<a href="{{ url('maxcdn/zones') }}">{{ 'Zones'|t }}</a>
+			</li>
 		</ul>
 	</nav>
 {% endset %}
@@ -29,10 +33,10 @@
 	<table class="data fullwidth">
 		<thead>
 			<tr>
-				<th scope="col">Filename</th>
-				<th scope="col">Cache Date</th>
-				<th scope="col">Hits</th>
-				<th scope="col">Size</th>
+				<th scope="col">{{ 'Filename'|t }}</th>
+				<th scope="col">{{ 'Cache Date'|t }}</th>
+				<th scope="col">{{ 'Hits'|t }}</th>
+				<th scope="col">{{ 'Size'|t }}</th>
 			</tr>
 		</thead>
 		<tbody>
