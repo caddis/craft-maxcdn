@@ -1,0 +1,28 @@
+{% import '_includes/forms' as forms %}
+
+{{
+	forms.textField({
+		label: "Alias",
+		name: 'alias',
+		value: settings.alias
+
+	})
+}}
+
+{{
+	forms.textField({
+		label: "Consumer Key",
+		name: 'consumerKey',
+		value: settings.consumerKey
+
+	})
+}}
+
+{{
+	forms.textField({
+		label: "Consumer Secret",
+		name: 'consumerSecret',
+		value: settings.consumerSecret
+
+	})
+}}
