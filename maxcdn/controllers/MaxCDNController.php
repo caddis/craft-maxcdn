@@ -22,14 +22,14 @@ class MaxCDNController extends BaseController
 	 */
 	public function actionZones()
 	{
-		$zoneData = craft()->maxCDN->getZones();
-		$zones = array();
+		$zones = craft()->maxCDN->getZones();
+		$zoneInfo = array();
 
-		if (is_array($zoneData)) {
-			foreach ($zoneData as $zone) {
+		if (is_array($zones)) {
+			foreach ($zones as $zone) {
 				$stats = craft()->maxCDN->getZoneStats($zone->id);
 
-				$zones[$zone->id] = array(
+				$zoneInfo[$zone->id] = array(
 					'name' => $zone->name,
 					'hits' => $stats->hit,
 					'cacheHits' => $stats->cache_hit,
@@ -40,7 +40,7 @@ class MaxCDNController extends BaseController
 		}
 
 		return $this->renderTemplate('maxcdn/zones', [
-			'zones' => $zones,
+			'zones' => $zoneInfo,
 		]);
 	}
 
@@ -52,12 +52,15 @@ class MaxCDNController extends BaseController
 	public function actionCache()
 	{
 		$zones = craft()->maxCDN->getZones();
+		$options = array();
 
-		foreach ($zones as $zone) {
-			$options[] = [
-				'label' => $zone->name,
-				'value' => $zone->id,
-			];
+		if (is_array($zones)) {
+			foreach ($zones as $zone) {
+				$options[] = [
+					'label' => $zone->name,
+					'value' => $zone->id,
+				];
+			}
 		}
 
 		return $this->renderTemplate('maxcdn/cache', [
