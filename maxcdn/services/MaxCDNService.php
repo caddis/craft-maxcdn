@@ -1,26 +1,20 @@
 <?php
 namespace Craft;
 
+require CRAFT_PLUGINS_PATH . '/maxcdn/vendor/autoload.php';
+
 class MaxCDNService extends BaseApplicationComponent
 {
-	/*
-		Plugin Settings
-	 */
-	protected $settings;
-
-	/*
-		An instance of the MaxCDN API.
-	 */
 	protected $api;
 
 	public function __construct()
 	{
-		$this->settings =craft()->plugins->getPlugin('maxcdn')->getSettings();
+		$settings = craft()->plugins->getPlugin('maxcdn')->getSettings();
 
 		$this->api = new \NetDNA(
-			$this->settings->alias,
-			$this->settings->consumerKey,
-			$this->settings->consumerSecret
+			$settings->alias,
+			$settings->consumerKey,
+			$settings->consumerSecret
 		);
 	}
 
@@ -64,20 +58,24 @@ class MaxCDNService extends BaseApplicationComponent
 	}
 
 	/**
-	 * Get the files in a zone, sorted by hits.
+	 * Get the files in a zone, sorted by hits
 	 *
-	 * @return object
+	 * @return array|bool
 	 */
 	public function getPopularFiles()
 	{
-		$response = $this->callApi('/reports/popularfiles.json', 'popularfiles');
+		$files = $this->callApi('/reports/popularfiles.json', 'popularfiles');
 
-		foreach ($response as &$file) {
+		if (! $files) {
+			return false;
+		}
+
+		foreach($files as &$file) {
 			$file->hit = number_format($file->hit);
 			$file->size = $this->convertSize($file->size, 'GB');
 		}
 
-		return $response;
+		return $files;
 	}
 
 	/**
@@ -117,20 +115,15 @@ class MaxCDNService extends BaseApplicationComponent
 	}
 
 	/**
-	 * Make a call to the MaxCDN API with the provided endpoint, then
-	 * decode the response and return the data itself.
+	 * Call api
 	 *
-	 * @method callApi
-	 *
-	 * @param string $endpoint API URL
-	 *
-	 * @return array
+	 * @param string $endpoint
+	 * @param string $reportType
+	 * @param string $callType
+	 * @return array|bool
 	 */
 	private function callApi($endpoint, $reportType, $callType = '')
 	{
-
-		// TODO: If this is confirmed to clear the cache, do proper
-		// checking for the response code.
 		if ($callType) {
 			switch ($callType) {
 				case 'delete':
@@ -140,8 +133,12 @@ class MaxCDNService extends BaseApplicationComponent
 			}
 		}
 
-		$response = $this->api->get($endpoint);
+		$response = json_decode($this->api->get($endpoint));
 
-		return json_decode($response)->data->$reportType;
+		if ($response->code === 404) {
+			return false;
+		}
+
+		return $response->data->$reportType;
 	}
 }

@@ -43,11 +43,6 @@ class MaxCDNPlugin extends BasePlugin
 		return 'https://raw.githubusercontent.com/caddis/craft-maxcdn/master/releases.json';
 	}
 
-	public function init()
-	{
-		require CRAFT_PLUGINS_PATH . '/maxcdn/vendor/autoload.php';
-	}
-
 	protected function defineSettings()
 	{
 		return [
